@@ -1,0 +1,442 @@
+a{color: rgb(30,159,255);font-weight:bold;}
+.r18{display:none}
+.nr18{display:block}
+th{padding:10px 10px 10px 10px}
+td{padding:5px 10px 5px 10px}
+
+.illustrator-image {
+  max-width: 200px;
+  max-height: 200px;
+  margin-bottom: 10px; 
+  /* 如果需要，可以添加更多样式，比如对齐方式、边距等 */
+}
+
+
+#elements-container {
+  text-align: left;
+  /* width: 100%; */
+  border-width: 1px;
+  border-style: solid;
+  background-color: rgb(242,242,242);
+  border-radius: 2px;
+  border-color: #e6e6e6;
+}
+
+.draggable-element {
+user-select: none;
+display: inline-block;
+text-align: center;
+margin: 5px;
+padding:0;
+font-size: 14px;
+height: 30px;
+line-height: 28px;
+border-radius: 2px;
+cursor: grab;
+}
+
+.checked{
+background:rgb(40, 40, 40)!important;
+color: rgb(255, 255, 255)!important;
+}
+
+.minus{
+display: inline-block;
+border-width: 1px;
+border-style: solid;
+border-radius: 2px;
+border-color: #e6e6e6;
+height: 28px;
+width: 28px;
+background: white;
+color: black;
+cursor: zoom-out;
+}
+.plus{
+display: inline-block;
+border-width: 1px;
+border-style: solid;
+border-radius: 2px;
+border-color: #e6e6e6;
+height: 28px;
+width: 28px;
+background: white;
+color: black;
+cursor: zoom-in;
+}
+.del{
+display: inline-block;
+margin-left:0px;
+border-width: 1px;
+border-style: solid;
+background-color: rgb(255,87,34);
+border-radius: 2px;
+border-color: #e6e6e6;
+height: 28px;
+width: 28px;
+background: rgb(255,87,34);
+color: white;
+cursor: no-drop;
+}
+
+.tagtext{
+background: rgb(98, 98, 98);
+padding-right:5px;
+padding-left:5px;
+display: inline-block;
+color:white;
+}
+
+.tagtext:hover{
+background: rgb(40, 40, 40);
+}
+
+
+.tagbutton{
+user-select: none;
+display: inline-block;
+text-align: center;
+margin: 5px;
+padding:0;
+font-size: 14px;
+height: 30px;
+line-height: 28px;
+border-radius: 2px;
+}
+
+.buttext{
+padding-right:5px;
+padding-left:5px;
+display: inline-block;
+background:white;
+color: black;
+border-width: 2px;
+border-style: solid;
+border-radius: 2px;
+border-color: #e6e6e6;
+}
+
+.buttext:hover{
+background: rgb(40, 40, 40);
+color:white;
+}
+
+#toast{
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    overflow: hidden;
+    margin: 0 0 6px;
+    padding: 15px 15px 15px 15px;
+    width: 300px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    -moz-box-shadow: 0 0 12px #999;
+    -webkit-box-shadow: 0 0 12px #999;
+    box-shadow: 0 0 12px #999;
+    color: #fff;
+    z-index: 999;
+    display: none;
+}
+
+.toast_success {
+    background:#51a351;
+}
+.toast_warning {
+    background:rgb(255,184,0);
+}
+.slider {
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+}
+ 
+.slider p {
+  font-size: 13px;
+  font-weight: 600;
+  font-family: Open Sans;
+  padding-left: 10px;
+  color: black;
+}
+ 
+.slider input[type="range"] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 320px;
+  height: 2px;
+  background: black;
+  border: none;
+  outline: none;
+}
+ 
+.slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  width: 10px;
+  height: 10px;
+  background: black;
+  border: 2px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+}
+ 
+.slider input[type="range"]::-webkit-slider-thumb:hover {
+  background: black;
+}
+
+.layui-bg-black {
+  background-color: #56247B!important;
+  color: #fff!important;
+}
+
+.layui-nav {
+  position: relative;
+  padding: 0 15px;
+  background-color: #56247B;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 0;
+  box-sizing: border-box;
+}
+
+.layui-layout-admin .layui-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #56247B;
+}
+
+.layui-carousel img {
+  width: 100%; /* 让图片宽度适应容器 */
+  height: auto; /* 图片高度自动 */
+}
+
+#njust-carousel {
+  height: 600px !important; /* 使用 !important 来确保覆盖Layui的内联样式 */
+}
+
+.video-container video {
+  width: 100%; /* 宽度为容器宽度 */
+  height: 100%; /* 高度为容器高度 */
+  object-fit: cover; /* 覆盖整个容器 */
+}
+
+/* 内容主体区域的样式 */
+.introduction-box, .student-testimonials, .program-highlights, .welcome-banner, .call-to-action {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.introduction-box, .student-testimonials blockquote {
+  border: 2px solid #e6e6e6;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+
+/* 全局的容器样式 */
+.container {
+  border: 1px #000000 solid;
+  margin-bottom: 20px; /* 两个文本区域之间的距离 */
+}
+
+/* 文本区域容器样式 */
+.textarea-container {
+  width: 90%;
+  margin: 10px 5%; /* 上下边距10px，左右边距5% */
+}
+
+/* 按钮和标签的容器样式 */
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 按钮和标签两端对齐 */
+  padding: 10px;
+  width: 90%;
+  margin: 0 5%; /* 左右边距5% */
+}
+
+/* 文本区域样式 */
+.layui-textarea {
+  width: 100%; /* 宽度100% */
+  height: 100px; /* 高度100px */
+  margin-bottom: 10px; /* 与下方元素的距离 */
+}
+
+/* 标签样式 */
+.layui-form-label {
+  margin: 0; /* 移除外边距 */
+  white-space: nowrap; /* 防止换行 */
+}
+
+/* 按钮样式 */
+.layui-btn {
+  margin-right: 10px; /* 按钮间隔 */
+}
+
+/* 按钮大小适应 */
+.layui-btn-xs {
+  padding: 0 10px; /* xs按钮的内边距 */
+}
+.layui-col-md6 {
+width: 30%;
+}
+.layui-container {
+width: 100%;
+}
+/* 下拉菜单样式 */
+.select-container {
+  margin: 10px 0; /* 上下外边距 */
+}
+/* 下拉菜单和滑块的容器样式 */
+.control-group {
+display: flex; /* 使用flex布局以便水平排列 */
+align-items: center; /* 垂直居中 */
+justify-content: space-between; /* 元素间隔开 */
+margin-bottom: 10px; /* 与下方元素间距 */
+}
+/* 控件标签样式 */
+.control-label {
+margin-right: 5px; /* 与控件间距 */
+}
+
+/* 下拉菜单和滑块样式 */
+.select-style, .slider-style {
+height: 30px; /* 高度与下拉菜单对齐 */
+}
+/* 滑条容器样式 */
+.slider-container {
+  margin: 10px 0; /* 上下外边距 */
+}
+/* 滑条样式 */
+.slider {
+  -webkit-appearance: none; /* 覆盖默认外观 */
+  appearance: none; /* 兼容性处理 */
+  width: 100%; /* 宽度 */
+  height: 15px; /* 高度 */
+  background: #d3d3d3; /* 背景色 */
+  outline: none; /* 移除轮廓 */
+}
+.slider-style::-webkit-slider-thumb {
+-webkit-appearance: none; /* 覆盖默认外观 */
+appearance: none;
+width: 25px; /* 滑块宽度 */
+height: 25px; /* 滑块高度 */
+background: #56247B; /* 滑块颜色 */
+cursor: pointer; /* 鼠标样式 */
+}
+
+.slider-style::-moz-range-thumb {
+width: 25px; /* 滑块宽度 */
+height: 25px; /* 滑块高度 */
+background: #56247B; /* 滑块颜色 */
+cursor: pointer; /* 鼠标样式 */
+}
+/* 滑块容器样式 */
+.control-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* 添加底部外边距 */
+  }
+  
+  /* 滑条样式 */
+  .slider-style {
+    -webkit-appearance: none;
+    appearance: none;
+    width: calc(100% - 50px); /* 减去label和value display的宽度 */
+    height: 20px;
+    background: #d3d3d3;
+    outline: none;
+    margin: 0 10px;
+  }
+  
+  /* 值显示样式 */
+  .value-display {
+    width: 40px; /* 设置固定宽度 */
+    text-align: center;
+  }
+  
+  /* 标签样式 */
+  .control-label {
+    display: block; /* 让标签成为块级元素，占满整行 */
+    margin-bottom: 5px; /* 与文本框间距 */
+  }
+  
+  /* 按钮样式 */
+  .layui-btn-primary {
+    background-color: #56247B; /* 背景颜色 */
+    color: white; /* 文字颜色 */
+  }
+  
+  /* 按钮鼠标悬浮样式 */
+  .layui-btn-primary:hover {
+    background-color: #37184f; /* 鼠标悬浮时的背景颜色 */
+  }
+  
+  /* 保持滑块和按钮宽度一致 */
+  .control-container, .button-container {
+    width: calc(100% - 10px); /* 减去边距的宽度 */
+    padding: 0 5px; /* 左右内边距 */
+  }
+/* 控件组样式 */
+.control-group2 {
+    display: flex;
+    justify-content: space-between; /* 子元素两端对齐 */
+    align-items: center; /* 垂直居中 */
+    margin-bottom: 15px; /* 与下方元素间距 */
+  }
+
+  /* 图像容器样式 */
+.image-display-container{
+  margin-bottom: 15px; /* 添加底部外边距 */
+  background-color: #f2f2f2; /* 背景色作为占位符 */
+  border: 1px dashed #ccc; /* 边框样式，虚线作为占位提示 */
+  border-radius: 4px; /* 边框圆角 */
+  height: 600px; /* 默认高度 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+.image-preview-container {
+margin-bottom: 15px; /* 添加底部外边距 */
+background-color: #f2f2f2; /* 背景色作为占位符 */
+border: 1px dashed #ccc; /* 边框样式，虚线作为占位提示 */
+border-radius: 4px; /* 边框圆角 */
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+/* 当有图像时的样式 */
+.generated-image-preview,
+.image-preview {
+max-width: 100%; /* 图像最大宽度为容器宽度 */
+max-height: 200px; /* 图像最大高度，保持与容器一致 */
+border-radius: 4px; /* 边框圆角 */
+}
+
+/* 图像占位符样式 */
+.image-placeholder {
+width: 100%;
+height: 100%;
+background-repeat: no-repeat;
+background-size: contain;
+background-position: center;
+}
+
+/* 图像标签样式 */
+.image-display-label,
+.image-preview-label {
+display: block; /* 让标签成为块级元素，占满整行 */
+margin-bottom: 5px; /* 与图像间距 */
+}
+
+#image-display-container {
+  width: 70%;
+}
+

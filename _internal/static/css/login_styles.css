@@ -1,0 +1,152 @@
+@charset "utf-8";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    background: url(https://img2.imgtp.com/2024/05/04/Su9b3Gbo.png) no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 媒体查询：屏幕宽度小于或等于600px时应用以下样式 */
+@media (max-width: 600px) {
+    body {
+        background: url(https://img2.imgtp.com/2024/05/04/LL0juDkg.png) no-repeat;
+        background-size: cover;
+    }
+}
+
+
+.box {
+    width: 350px;
+    height: 450px;
+    border-top: 1px solid rgba(255,255,255,0.5);
+    border-left: 1px solid rgba(255,255,255,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    border-right: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(3px);
+    background: rgba(50,50,50,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.box > h2 {
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 30px;
+}
+
+.box .input-box {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.box .input-box label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 5px;
+}
+
+.box .input-box input {
+    letter-spacing: 1px;
+    font-size: 14px;
+    box-sizing: border-box;
+    width: 250px;
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.5);
+    background: rgba(50, 50, 50, 0.6);
+    outline: none;
+    padding: 0 12px;
+    color: rgba(255,255,255,0.9);
+    transition: 0.2s;
+}
+
+.box .input-box input:focus {
+    border: 1px solid rgba(255,255,255,0.8);
+}
+
+.box .btn-box {
+    width: 250px;
+    flex-direction: column;
+    align-items: start;
+}
+
+.box .btn-box > a {
+    outline: none;
+    display: block;
+    width: 250px;
+    text-align: end;
+    text-decoration: none;
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+}
+
+.box .btn-box > a:hover {
+    color: rgba(255,255,255,1);
+}
+
+.box .btn-box > div {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box .btn-box > div > button {
+    outline: none;
+    margin-top: 10px;
+    display: block;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+.box .btn-box > div > button:nth-of-type(1) {
+    width: 100%;
+    height: 35px;
+    color: rgba(255,255,255,0.9);
+    border: 1px solid rgba(192, 119, 91, 0.7);
+    background: rgba(192, 119, 91, 0.5);
+}
+
+.box .btn-box > div > button:nth-of-type(2) {
+    width: 120px;
+    height: 35px;
+    margin-left: 10px;
+    color: rgba(255,255,255,0.9);
+    border: 1px solid rgba(192, 119, 91, 0.7);
+    background: rgba(192, 119, 91, 0.5);
+}
+
+.box .btn-box > div > button:hover {
+    border: 1px solid rgba(251, 128, 71, 0.7);
+    background: rgba(251, 128, 71, 0.5);
+}
+.info {
+    width: 300px; /* 或者根据您的需要调整宽度 */
+    padding: 20px;
+    border-radius: 10px;
+    color: rgba(255,255,255,0.9);
+}
+
+.info h3 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.info p {
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+}
