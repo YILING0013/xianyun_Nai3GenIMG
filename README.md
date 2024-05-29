@@ -1,0 +1,2 @@
+# xianyun_Nai3GenIMG
+ 这是一个基于Flask编写的NovelAI图像生成脚本
