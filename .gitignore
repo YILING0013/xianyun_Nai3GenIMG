@@ -1,2 +1,4 @@
 
 logs/app.log
+/_internal/default_json
+user_notebook/notebook.json
