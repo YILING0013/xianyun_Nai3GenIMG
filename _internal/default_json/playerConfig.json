@@ -1,1 +1,88 @@
-[{"tabId":"1717744479121","tabName":"角色-nsfw","entries":[{"id":1,"entry":"{nsfw}","disabled":false,"LAY_NUM":1,"LAY_INDEX":0}]}]
+[
+    {
+        "tabId": "1717155781520",
+        "tabName": "角色-原神女性角色",
+        "entries": [
+            {
+                "id": 1,
+                "entry": "ganyu (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 1,
+                "LAY_INDEX": 0
+            },
+            {
+                "id": 2,
+                "entry": "lumine (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 2,
+                "LAY_INDEX": 1
+            },
+            {
+                "id": 3,
+                "entry": "hu tao (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 3,
+                "LAY_INDEX": 2
+            },
+            {
+                "id": 4,
+                "entry": "mona (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 4,
+                "LAY_INDEX": 3
+            },
+            {
+                "id": 5,
+                "entry": "keqing (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 5,
+                "LAY_INDEX": 4
+            },
+            {
+                "id": 6,
+                "entry": "eula (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 6,
+                "LAY_INDEX": 5
+            },
+            {
+                "id": 7,
+                "entry": "shenhe (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 7,
+                "LAY_INDEX": 6
+            },
+            {
+                "id": 8,
+                "entry": "nahida (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 8,
+                "LAY_INDEX": 7
+            },
+            {
+                "id": 9,
+                "entry": "yelan (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 9,
+                "LAY_INDEX": 8
+            },
+            {
+                "id": 10,
+                "entry": "yoimiya (genshin impact)",
+                "disabled": false,
+                "LAY_NUM": 10,
+                "LAY_INDEX": 9
+            },
+            {
+                "id": 11,
+                "entry": "lisa (genshin impact)",
+                "disabled": false
+            },
+            {
+                "id": 12,
+                "entry": "guizhong (genshin impact)",
+                "disabled": false
+            }
+        ]
+    }
+]
