@@ -1,8 +1,11 @@
-#代理地址[The default address is the official interface. If you have your own proxy address, you can add it to support polling requests]
+#The default address is the official interface. If you have your own proxy address, you can add it to support polling requests
 proxy_urls:
 - https://image.novelai.net/ai/generate-image
-#认证密钥[Do not modify]
+#Do not modify the following configuration
 totp_secret: xianyun_2776359982_xianyun@idlecloud.cc_THIS_PROJECT_IS_PERSONALLY_CREATED_BY_XIANYUN_(QQ_NUMBER:_2776359982)_AND_IS_AVAILABLE_FOR_FREE_USE._IF_YOU_HAVE_PAID_FOR_THIS_PROJECT,_PLEASE_REQUEST_A_REFUND_AND_REPORT_THE_INCIDENT
-#openai接口相关配置,提供页面翻译功能
-openai_base_url: https://api.openai.com/v1 #api地址
-openai_api_key: sk-xxxx #api密钥
+#openai configuration
+openai_base_url: https://api.openai.com/v1 #api address
+openai_api_key: sk-xxxx #api key
+#Network proxy configuration,if you need to use a proxy, please uncomment the following configuration
+# proxy:
+#   http: 'http://127.0.0.1:7890'
