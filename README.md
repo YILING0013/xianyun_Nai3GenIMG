@@ -30,6 +30,8 @@
 
 [一键图集转Excel](#一键图集转excel)：支持一键将AI图像提取元数据并生成为精美的Excel文档;
 
+[图像元数据覆写](#图像元数据覆写)：将图像的数据进行更改，支持批量修改;
+
 ## 功能介绍
 
 ### 启动
@@ -291,3 +293,12 @@
 
 此程序将自动获取AI_images目录下的所有AI图像，并获取其元数据，自动生成为一个Excel文档：\
 <img src="./images/media/image44.png" width="auto" height="auto" />
+
+### 图像元数据覆写
+
+点击启动文件主目录的【图像覆写元数据_v2.1.exe】程序：
+
+<img src="./images/media/image45.png" width="auto" height="auto" />
+
+点击Open image加载一张图像，点击Open image folder加载文件夹，需要注意的是文件夹啊第一张图像必须是可读取元数据的：\
+<img src="./images/media/image46.png" width="auto" height="auto" />
