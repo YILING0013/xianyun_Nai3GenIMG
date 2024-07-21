@@ -219,7 +219,7 @@ def apply_to_all(entries):
         comment_data = {}
         for key, entry in entries.items():
             if key.startswith("Comment."):
-                comment_key = key.split(".", 1)[1] # 从第一个点开始分割
+                comment_key = key.split(".", 1)[1]
                 comment_data[comment_key] = entry.get("1.0", tk.END).strip()
             else:
                 json_data[key] = entry.get("1.0", tk.END).strip()
@@ -230,10 +230,20 @@ def apply_to_all(entries):
         if not output_folder:
             return
 
+        default_data = {"Comment": json.dumps({"Default": "This is default metadata"})}
+        
         for idx, file_path in enumerate(image_files):
             try:
-                with open(file_path, 'rb') as img_file: # 读取文件
+                with open(file_path, 'rb') as img_file:
                     image_data = img_file.read()
+                try:
+                    _ = read_hidden_data_from_image(image_data)
+                except:
+                    image_data_io = BytesIO()
+                    Image.open(file_path).save(image_data_io, format='PNG')
+                    image_data = image_data_io.getvalue()
+                    save_hidden_data_to_image(image_data, default_data, file_path)
+
                 output_path = os.path.join(output_folder, os.path.basename(file_path))
                 save_hidden_data_to_image(image_data, json_data, output_path)
                 logger.info(f"Processed {file_path} ({idx + 1}/{len(image_files)})")
@@ -331,7 +341,7 @@ def about_me():
         webbrowser.open_new("https://github.com/YILING0013/xianyun_Nai3GenIMG")
 
     def open_afdian():
-        webbrowser.open_new("https://afdian.net/a/lingyunfei")
+        webbrowser.open_new("https://afdian.com/a/lingyunfei")
     
     def open_xianyunWeb():
         webbrowser.open_new("https://nai3.xianyun.cool/")
