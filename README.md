@@ -300,5 +300,5 @@
 
 <img src="./images/media/image45.png" width="auto" height="auto" />
 
-点击Open image加载一张图像，点击Open image folder加载文件夹，需要注意的是文件夹啊第一张图像必须是可读取元数据的：\
+点击Open image加载一张图像，点击Open image folder加载文件夹，需要注意的是文件夹第一张图像必须是可读取元数据的：\
 <img src="./images/media/image46.png" width="auto" height="auto" />
