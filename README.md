@@ -1,6 +1,8 @@
 ## 关于本项目
 
-本项目是基于python-Flask为后端编写的web应用程序，实现了基于NovelAI的图像生成。当前可以实现的操作有：
+2025.1.24: 程序新增了启动器，配置部分可用通过启动器配置和运行，支持配置公网访问(多人共享)
+
+【文档部分内容过时，请以实际页面为准】本项目是基于python-Flask为后端编写的web应用程序，实现了基于NovelAI的图像生成。当前可以实现的操作有：
 
 [文生图](#文生图)：基于文本的AI图像生成;
 
@@ -39,7 +41,7 @@
 解压压缩包得到如下文件：\
 <img src="./images/media/image1.png" width="auto" height="auto" />
 
-运行xianyun_Nai3GenIMG_V3.exe：
+运行启动器.exe：
 
 <img src="./images/media/image2.png" width="auto" height="auto" />
 

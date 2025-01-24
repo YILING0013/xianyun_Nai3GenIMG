@@ -1,70 +1,645 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>首页二</title><meta name="renderer" content="webkit"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><link rel="stylesheet" href="{{ url_for('static', filename='js/layui-v2.9.6/layui/css/layui.css') }}" media="all"><link rel="stylesheet" href="{{ url_for('static', filename='css/cropper.min.css') }}" media="all"><script src="{{ url_for('static', filename='js/jsjiami_qlvf09.min.js') }}"></script><style>
-    @font-face {
-      font-family: 'FontAwesome';
-      src: url("{{ url_for('static', filename='fonts/fontawesome-webfont.eot') }}?v=4.7.0");
-      src: url("{{ url_for('static', filename='fonts/fontawesome-webfont.eot') }}?#iefix&v=4.7.0") format('embedded-opentype'), 
-           url("{{ url_for('static', filename='fonts/fontawesome-webfont.woff2') }}?v=4.7.0") format('woff2'), 
-           url("{{ url_for('static', filename='fonts/fontawesome-webfont.woff') }}?v=4.7.0") format('woff'), 
-           url("{{ url_for('static', filename='fonts/fontawesome-webfont.ttf') }}?v=4.7.0") format('truetype'), 
-           url("{{ url_for('static', filename='fonts/fontawesome-webfont.svg') }}?v=4.7.0#fontawesomeregular") format('svg');
-      font-weight: normal;
-      font-style: normal;
-    }
-</style><link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.css') }}" media="all"><link rel="stylesheet" href="{{ url_for('static', filename='css/public.css') }}" media="all"><link rel="stylesheet" href="{{ url_for('static', filename='css/tabGroup.css') }}" media="all"><link id="layui_theme_css" rel="stylesheet" href="{{ url_for('static', filename='css/layui-theme-dark.css') }}"></head><body><div class="layuimini-container"><div class="layuimini-main"><div class="layui-row layui-col-space16"><div class="layui-col-md8"><div class="layui-row layui-col-space15"><div class="layui-col-md12"><div class="layui-tab layui-card" lay-filter="demoTab"><ul class="layui-tab-title"><li class="layui-this" lay-id="11"><i class="fa fa-pencil-square"></i>正面提示词 
-                                
-                                <button id="upload-vibe" class="layui-btn layui-btn-sm" style="display: none;"><i class="layui-icon layui-icon-upload"></i> Vibe Transfer</button></li><li lay-id="22"><i class="fa fa-thumbs-o-down"></i>负面提示词</li><li lay-id="33"><i class="fa fa-book"></i>内容翻译(ChatGPT) <button id="translateButton" class="layui-btn layui-btn-sm" style="display: none;" onclick="translateText()">翻译内容</button></li></ul><div class="layui-tab-content"><div class="tagarea layui-tab-item layui-show"><div class="layui-row layui-col-space10"><div class="layui-col-md12" id="tagareaspace"><div class="layui-form-item layui-form-text"><textarea id="tagarea" placeholder="请输入内容" class="layui-textarea" style="height: 100px;">best quality, amazing quality, very aesthetic, absurdres, masterpiece,</textarea><ul id="custom-context-menu"><li onclick="annotateText()">注释</li><li onclick="unannotateText()">取消注释</li><li onclick="increaseWeight()">加权</li><li onclick="decreaseWeight()">降权</li><li id="copy_prompt">复制</li><li id="cut_prompt">剪切</li><li id="paste_prompt">粘贴</li><li id="select-all">全选</li></ul></div></div></div><div id="tag-suggestions"></div></div><div class="tagarea layui-tab-item"><div class="layui-row layui-col-space10 layuimini-qiuck"><div class="layui-form-item layui-form-text"><textarea id="tagarea2" placeholder="请输入内容" class="layui-textarea" style="height: 100px;">lowres, {bad}, error, fewer, extra, missing, worst quality, jpeg artifacts, bad quality, watermark, unfinished, displeasing, chromatic aberration, signature, extra digits, artistic error, username, scan, [abstract]</textarea></div></div></div><div class="tagarea layui-tab-item"><div class="layui-row layui-col-space10 layuimini-qiuck"><div class="layui-col-md6"><div class="layui-card"><div class="layui-card-body"><div class="translatearea"><div class="layui-row layui-col-space10"><div class="layui-form-item layui-form-text"><textarea id="translatearea1" placeholder="请输入需要翻译的内容" class="layui-textarea" style="height: 100px;"></textarea></div></div></div></div></div></div><div class="layui-col-md6"><div class="layui-card"><div class="layui-card-body"><div class="translatearea"><div class="layui-row layui-col-space10 layuimini-qiuck"><div class="layui-form-item layui-form-text"><textarea id="translatearea2" placeholder="结果输出" class="layui-textarea" style="height: 100px;"></textarea></div></div></div></div></div></div></div></div></div></div></div><div class="layui-col-md12"><div class="layui-card"><div class="layui-card-body"><div class="control-container"><button id="prompt_notebook" class="layui-btn layui-btn-primary layui-btn-fluid layui-btn-sm" lay-on="prompt_notebook">词条笔记本</button><button id="prompt_upload" class="layui-btn layui-btn-primary layui-btn-fluid layui-btn-sm" lay-on="prompt_upload">上传词条</button><button id="select_random" class="layui-btn layui-btn-primary layui-btn-fluid layui-btn-sm" lay-on="Stochastic_functional_area">随机Tag</button></div></div></div></div><div class="layui-col-md12" id="Random_Tag" style="display: none;"><div class="layui-row layui-col-space15"><div class="layui-col-md3"><div class="layui-card"><div class="layui-card-header"><i class="fa fa-random icon">随机Tag</i></div><div class="layui-card-body"><div class="layui-btn-container"><button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm layui-btn-fluid" id="addTabBtn">添加自定类别</button><button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm layui-btn-fluid" id="addTagGroupBtn">添加轮询词组</button><button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm layui-btn-fluid" id="addPlayerBtn">添加随机角色</button><button class="layui-btn layui-btn-primary layui-btn-sm layui-btn-fluid" id="RemoveDefaultTab">清空默认选项</button><button class="layui-btn layui-btn-primary layui-bg-red layui-btn-sm layui-btn-fluid" id="randomSelectBtn">获取随机类别</button><button class="layui-btn layui-btn-primary layui-bg-red layui-btn-sm layui-btn-fluid" id="getTerms">获取词条组</button><button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm layui-btn-fluid" id="exportTabBtn">导出类别配置</button><button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm layui-btn-fluid" id="exportTagGroupBtn">导出词组配置</button><button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm layui-btn-fluid" id="exportPlayerBtn">导出角色配置</button><input type="file" id="importFile" style="display: none;" /><button id="importBtn" class="layui-btn layui-border-green layui-btn-primary layui-btn-sm layui-btn-fluid">导入类别配置</button><input type="file" id="importTagGroupFile" style="display: none;" /><button id="importTagGroupBtn" class="layui-btn layui-border-green layui-btn-primary layui-btn-sm layui-btn-fluid">导入词组配置</button><input type="file" id="importPlayerFile" style="display: none;" /><button id="importPlayerBtn" class="layui-btn layui-border-green layui-btn-primary layui-btn-sm layui-btn-fluid">导入角色配置</button></div><div class="control-container line-wrap"><div class="layui-form"><input type="checkbox" name="Artist_position" title="画师置于前端"><input type="checkbox" name="Random_sort" title="随机排序"><input type="checkbox" name="Auto_random" lay-filter="Auto_random" title="每次请求自动随机词条"><input type="checkbox" name="Auto_polling" lay-filter="Auto_polling" title="每次请求自动轮询词条组"><input type="checkbox" name="Random_checkbox" title="启用随机权重"></div></div></div></div></div><div class="layui-col-md9"><div class="layui-card"><div class="layui-card-header"><i class="fa fa-random icon">随机Tag</i></div><div class="layui-card-body"><div class="layui-tab" lay-filter="test-handle" lay-allowclose="true"><ul class="layui-tab-title"><li class="layui-this" lay-id="11" lay-allowclose="false">画师标签</li></ul><div class="layui-tab-content"><div class="layui-tab-item layui-show"><div class="control-container line-wrap"><label for="Rescale-input" class="control-label">设定:</label><div class="layui-form"><input type="checkbox" name="Random_range" title="随机画师抽取个数"></div><label for="Rescale-input" class="control-label">抽取个数范围:</label><input type="number" id="illustratorCount" placeholder="画师词条最大数量,默认为5" class="layui-input" min="0" value="5"><input type="number" id="illustratorMinCount" placeholder="画师词条最小数量,默认为1" class="layui-input" min="0" value="1"><input type="number" id="entryCount" placeholder="自定义画师词条抽取数量" class="layui-input" min="0" value="0"></div><div><table id="illustratorTable" lay-filter="illustratorTable"></table></div><hr class="ws-space-16"><div class="control-container line-wrap"><label for="Rescale-input" class="control-label">自定义画师词条(逗号分隔):</label><textarea id="entryInput" placeholder="Enter a custom combination of custom artist terms, using commas to separate each Tag" class="layui-textarea" style="min-height: 30px;"></textarea><button class="layui-btn layui-btn-primary layui-btn-sm" id="generateTableBtn">生成词条表格</button><div class="layui-form"><input type="checkbox" name="Split_artist" title="拆分自定义画师"></div></div><hr class="ws-space-16"><div><table id="entryTable" lay-filter="entryTable"></table></div><div class="control-container line-wrap"></div></div></div></div></div></div></div></div></div><div class="layui-col-md12"><div class="layui-card layui-col-md12"><div class="layui-card-header" id="expandableTrigger"><i class="fa fa-picture-o icon" style="cursor: pointer;">点击展开图像上传功能区</i></div><div class="layui-card-body" style="display:none;" id="uploadArea"><div id="1echarts-records" style="width: 100%;"><div class="image-upload-container" id="img-upload" style="backdrop-filter: blur(5px); padding: 20px; border-radius: 10px;"><div class="layui-col-md12"><div class="layui-col-md4"><div class="layui-upload-drag" style="display: block;" id="ID-upload-demo-drag"><i class="layui-icon layui-icon-upload"></i><div>上传图像进行常规图像处理</div></div></div><div class="layui-col-md4"><div class="layui-upload-drag" style="display: block;" id="Pro-upload-picture-drag"><i class="layui-icon layui-icon-upload"></i><div>上传图像进行高级图像处理</div></div></div><div class="layui-col-md4"><div class="layui-upload-drag" style="display: block;" id="expand-picture-drag"><i class="layui-icon layui-icon-upload"></i><div>上传图像进行图像扩展处理</div></div></div></div><div class="layui-col-md12" id="expand-picture-container"><div class="img-canvas-container"><canvas id="expand-imageCanvas" style="max-width: 100%;"></canvas></div><div class="layui-card-body" id="expand-picture" style="display: none;"><button id="reset-button">重置画布</button><button id="upload-button">更新画布状态</button><label for="mask_diffusion">蒙版扩散像素：</label><input type="range" id="mask_diffusion" min="1" max="50" value="20"><button id="export-button">导出蒙版</button><button id="remove-button">清除蒙版</button><button id="fill-expand-Btn">使用生成的图像填补</button><button id="download-button">保存图像</button><button id="delete-expand-picture-btn">退出当前功能</button></div></div><div class="layui-col-md6"><div class="layui-card-body" id="Pro-draw" style="display: none;"><button id="exportBtn">导出图像</button><button id="fillBtn">使用生成的图像填补</button><button id="clear-all-Btn">退出当前功能</button><div class="image-container-draw"><img id="Pro-draw-image"></div></div></div><div class="layui-col-md6" id="mask-draw-container"><div class="layui-card-body" id="mask-draw" style="display: none;"><div class="layui-form"><label for="brushSize">笔刷尺寸：</label><input type="range" id="brushSize" min="1" max="200" value="35" title="快捷键：-="><span style="padding-left: 20px;">颜色:</span><div id="ID-colorpicker-demo-size-sm" style="margin-left: 6px;"></div><button id="colorPickerBtn" title="快捷键：I">取色工具</button><input type="checkbox" name="disabled_original_image" lay-filter="disabled_original_image" title="禁用Overlay Original Image"><input type="checkbox" name="draw_color_image" lay-filter="draw_color_image" title="图像彩绘"><button id="exportColorBtn" title="将绘制的内容保存到图像">保存彩绘</button></div><label for="imageSize">图像分辨率：</label><span id="imageSize"></span><button id="exportMask" title="快捷键: S">导出蒙版</button><button id="remove_background" title="快捷键: Ctrl+B">生成背景蒙版</button><button id="undoBtn" title="快捷键: Ctrl+Z">撤销</button><button id="redoBtn" title="快捷键: Ctrl+Y">重做</button><button id="clearBtn" title="快捷键: C">清空</button><button id="eraserBtn" title="快捷键: E">橡皮擦</button><div class="layui-form"><input type="radio" name="augment-image" value="lineart" lay-filter="augment-image" title="转线稿(Line Art)"><input type="radio" name="augment-image" value="sketch" lay-filter="augment-image" title="转草稿(Sketch)"><input type="radio" name="augment-image" value="declutter" lay-filter="augment-image" title="清理画面(Declutter)"><input type="radio" name="augment-image" value="emotion" lay-filter="augment-image" title="情绪修改(Emotion)"><input type="radio" name="augment-image"  value="colorize" lay-filter="augment-image" title="着色(Colorize)"></div><div class="layui-form" id="emotionContent" style="display: none;"><h3>Anime Only. Start with a neutral emotion image.</h3><div class="layui-form-item"><label class="layui-form-label">Emotion</label><div class="layui-input-inline"><select name="emotion" lay-verify="required"><option value="neutral">中立</option><option value="happy">开心</option><option value="sad">悲伤</option><option value="angry">愤怒</option><option value="surprised">惊讶</option><option value="disgusted">厌恶</option><option value="scared">害怕</option><option value="confused">困惑</option><option value="tired">疲倦</option><option value="excited">兴奋</option><option value="embarrassed">尴尬</option><option value="shy">害羞</option><option value="smug">得意</option><option value="determined">坚定</option><option value="bored">无聊</option><option value="thinking">思考</option><option value="nervous">紧张</option><option value="laughing">大笑</option><option value="lrritated">恼火</option><option value="aroused">激动</option><option value="worried">担忧</option><option value="love">恋爱</option><option value="hurt">痛苦</option><option value="playful">调皮</option></select></div><div class="layui-input-inline"><button type="button" class="layui-btn layui-btn-normal" id="decrementBtn">-</button><button type="button" class="layui-btn layui-btn-normal" id="incrementBtn">+</button><span class="status-text" id="statusText">Normal</span></div></div><div class="layui-form-item"><label class="layui-form-label">Prompt</label><div class="layui-input-block"><input type="text" name="emotionPrompt" id="emotion_Prompt" placeholder="Prompt (Optional)" class="layui-input"></div></div></div><div class="layui-form" id="colorizeContent" style="display: none;"><div class="layui-form-item"><label class="layui-form-label">Defry</label><div class="layui-input-inline"><input type="number" name="defry" id="defryInput" placeholder="0-5" class="layui-input" min="0" max="5" value="0"></div></div><div class="layui-form-item"><label class="layui-form-label">Prompt</label><div class="layui-input-block"><input type="text" name="colorizePrompt" id="colorize_Prompt" placeholder="Prompt (Optional)" class="layui-input"></div></div></div></div><div class="canvas-container" id="ID-upload-demo-preview"><canvas id="imageCanvas" style="max-width: 100%;"></canvas><canvas id="colorCanvas"></canvas><canvas id="maskCanvas"></canvas><span id="delete-image-btn" style="display: none;">X</span></div><div style="backdrop-filter: blur(5px); padding: 20px; border-radius: 10px;"><div id="mask-preview" style="border-left: 4px solid #e6e6e6; padding-left: 20px;"></div></div></div></div></div></div></div></div><div class="layui-col-md12"><div class="layui-card"><div class="layui-card-header"><i class="fa fa-picture-o icon">图像输出</i><label for="scale-slider" class="control-label"></label><label for="scale-slider" class="control-label" id="queue"></label><button id="downloadAll" class="layui-btn layui-btn-sm">下载所有图像</button></div><div class="layui-card-body"><div id="1echarts-records" style="width: 100%;min-height:350px"><div class="image-display-container" id="img-display" style="backdrop-filter: blur(5px); padding: 20px; border-radius: 10px;"></div><div class="image-preview-container" style="backdrop-filter: blur(5px); padding: 20px; border-radius: 10px;"><div class="control-container" id="img-preview" style="border-left: 4px solid #e6e6e6; padding-left: 20px;"></div></div></div></div></div></div></div></div><div class="layui-col-md4"><div class="layui-card"><div class="layui-card-header" id="userOpus">Opus:</div></div><div class="layui-card"><div class="layui-card-body layui-text"><div class="control-container"><label for="image-slider" class="control-label">连续绘制(次):</label><div id="image-input"></div></div><hr class="ws-space-16"><div class="control-container"><label for="model-list" class="control-label">使用模型(Model):</label><div class="layui-form"><div class="layui-col-md12"><select id="model-list"><option value="nai-diffusion-4-curated-preview" id="nai-diffusion-4-curated-preview">nai-diffusion-4-curated-preview</option><option value="nai-diffusion-3" id="nai-diffusion-3">nai-diffusion-3</option><option value="nai-diffusion-furry-3" id="nai-diffusion-furry-3">nai-diffusion-furry-3</option></select></div></div><div class="layui-form"><input type="checkbox" name="autoDownload" lay-filter="autoDownload" title="自动下载图像"><input type="checkbox" name="autoVoice" lay-filter="autoVoice" title="生成结束播报"></div></div><hr class="ws-space-16"><div class="generate-container" id="generate-images-bth"><button id="generate-images" class="layui-btn">Generate Images</button></div></div></div><div class="layui-card"><div class="layui-card-body layui-text"><hr class="ws-space-16"><div class="layui-collapse" lay-accordion><div class="layui-colla-item"><div class="layui-colla-title">基础参数设置折叠面板</div><div class="layui-colla-content layui-show"><div class="control-container"><label for="Scale-input" class="control-label">Guidance Scale:</label><div id="Scale-input"></div><span id="Scale-value">5.00</span></div><hr class="ws-space-16"><div class="control-container" id="sampling-algorithm_and_seed"><label for="sampling-algorithm" class="control-label">采样:</label><div class="layui-form"><div class="layui-col-md12"><select id="sampling-algorithm"><option value="k_euler" id="k_euler">Euler</option><option value="k_euler_ancestral" id="k_euler_ancestral" selected>Euler Ancestral</option><option value="k_dpmpp_2s_ancestral" id="k_dpmpp_2s_ancestral">DPM++ 2S Ancestral</option><option value="k_dpmpp_2m_sde" id="k_dpmpp_2m_sde">DPM++ 2M SDE</option><option value="k_dpmpp_2m" id="k_dpmpp_2m">DPM++ 2M</option><option value="k_dpmpp_sde" id="k_dpmpp_sde">DPM++ SDE</option><option value="ddim_v3" id="ddim_v3">DDIM</option></select></div></div><label for="seed" class="control-label">Seed:</label><div class="layui-form"><input id="seed" type="text" name="" placeholder="Enter Seed" class="layui-input"></div></div><hr class="ws-space-16"><div class="control-container"><label for="Steps-slider" class="control-label">Steps:</label><div id="Steps-input"></div></div><hr class="ws-space-16"><div class="control-container"><label for="Width-slider" class="control-label">Width:</label><div id="Width-input"></div></div><hr class="ws-space-16"><div class="control-container"><label for="Height-slider" class="control-label">Height:</label><div id="Height-input"></div></div><hr class="ws-space-16"><div class="control-container" id="resolution_and_AAA"><label for="resolution" class="control-label">便捷分辨率:</label><div class="layui-form"><div class="layui-col-md12"><select id="resolution"><option value="1472X1472" id="1472X1472" selected>1472*1472</option><option value="1024X1536" id="1024X1536">1024*1536</option><option value="1536X1024" id="1536X1024">1536*1024</option><option value="1088X1920" id="1088X1920">1088*1920</option><option value="1920X1088" id="1920X1088">1920*1088</option></select></div></div><div class="layui-form"><input type="checkbox" name="AAA" title="启用分辨率" lay-skin="tag"></div></div><hr class="ws-space-16"><div class="control-container"><label for="Rescale-input" class="control-label">Prompt Guidance Rescale:</label><div id="Rescale-input"></div><span id="Rescale-value">0.00</span></div><hr class="ws-space-16"><div class="control-container slider-container"><label for="Strength-input" class="control-label">Strength:</label><div id="Strength-input"></div><span id="Strength-value">0.70</span></div><div class="control-container slider-container"><label for="Noise-input" class="control-label">Noise:</label><div id="Noise-input"></div><span id="Noise-value">0.00</span></div><hr class="ws-space-16"><div class="control-container"><label for="noise-schedule" class="control-label">Noise Schedule:</label><div class="layui-form"><div class="layui-col-md12"><select id="noise-schedule"><option value="native" id="native">native</option><option value="karras" id="karras">karras</option><option value="exponential" id="exponential">exponential</option><option value="polyexponential" id="polyexponential">polyexponential</option></select></div></div></div><hr class="ws-space-16"><div class="generate-container"><div class="layui-form"><input type="checkbox" name="SMEA" title="SMEA" lay-filter="smea-checkbox"><div id="dyn-container" style="display: none;"><input type="checkbox" name="DYN" title="DYN"></div><input type="checkbox" name="Variety" title="Variety" lay-filter="Variety-checkbox"><input type="checkbox" name="Decrisp" title="Decrisp" lay-filter="Decrisp-checkbox"></div><div class="layui-form Vibe-Transfer-container"><input type="checkbox" name="Vibe_Transfer" title="Vibe_Transfer" lay-filter="Vibe_Transfer-checkbox"></div></div></div></div><div class="layui-colla-item"><div class="layui-colla-title">VibeTransfer折叠面板</div><div class="layui-colla-content"><div class="Vibe-img-container"></div></div></div><div class="layui-colla-item"><div class="layui-colla-title">单角色位置控制折叠面板</div><div class="layui-colla-content"><button id="addTabGroup" class="layui-btn layui-btn-fluid">Add Tab Group</button><div class="layui-form"><input type="checkbox" name="AI_choice_Positions" title="AI choice Character Positions" lay-filter="Positions-checkbox"><button id="loadTabGroups" class="layui-btn layui-btn-warm layui-btn-xs">缓存重载选项卡</button></div><div id="tabContainer"></div></div></div></div><br/></div></div></div></div></div></div><script src="{{ url_for('static', filename='js/layui-v2.9.6/layui/layui.js') }}" charset="utf-8"></script><script src="{{ url_for('static', filename='js/cropper.js') }}" charset="utf-8"></script><script src="{{ url_for('static', filename='js/scripts.js') }}"></script><script type="text/javascript">
-window.rootPath = "{{ url_for('static', filename='') }}";
-</script><script src="{{ url_for('static', filename='js/lay-config.js') }}?v=1.0.4" charset="utf-8"></script><script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script><script src="{{ url_for('static', filename='js/draw.js') }}"></script><script defer src="{{ url_for('static', filename='js/tabGroup.js') }}"></script><script>
-layui.use('layer', function() {
-    var layer = layui.layer;
-    var util = layui.util;
-});
-</script><script src="{{ url_for('static', filename='js/jszip.min.js') }}"></script><script src="{{ url_for('static', filename='js/FileSaver.min.js') }}"></script><script src="{{ url_for('static', filename='js/gen-img-uiti.js') }}"></script><script src="{{ url_for('static', filename='js/Random_tag.js') }}"></script><script>
-layui.use(['util', 'layer'], function(){
-var util = layui.util, layer = layui.layer;
-util.fixbar({
-  bars: [{
-    type: '切换背景色',
-    icon: 'layui-icon-moon' // 初始图标为月亮，代表深色主题
-  }],
-  click: function(type){
-    var themeLink = document.getElementById('layui_theme_css');
-    var currentTheme = themeLink.getAttribute('href');
-    var theme, oldIconClass, newIconClass;
-    
-    if(currentTheme.includes('dark')) {
-      // 如果当前是深色主题，切换到浅色主题
-      theme = '{{ url_for("static", filename="css/text.css") }}';
-      oldIconClass = 'layui-icon-moon'; // 旧图标为月亮，代表深色主题
-      newIconClass = 'layui-icon-light'; // 更新图标为太阳，代表浅色主题
-    } else {
-      // 如果当前是浅色主题，切换到深色主题
-      theme = '{{ url_for("static", filename="css/layui-theme-dark.css") }}'; // 深色主题的路径
-      oldIconClass = 'layui-icon-light'; // 旧图标为太阳，代表浅色主题
-      newIconClass = 'layui-icon-moon'; // 更新图标为月亮，代表深色主题
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页二</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/layui-v2.9.6/layui/css/layui.css') }}" media="all">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cropper.min.css') }}" media="all">
+    <script src="{{ url_for('static', filename='js/jsjiami_qlvf09.min.js') }}"></script>
+    <style>
+        @font-face {
+          font-family: 'FontAwesome';
+          src: url("{{ url_for('static', filename='fonts/fontawesome-webfont.eot') }}?v=4.7.0");
+          src: url("{{ url_for('static', filename='fonts/fontawesome-webfont.eot') }}?#iefix&v=4.7.0") format('embedded-opentype'), 
+               url("{{ url_for('static', filename='fonts/fontawesome-webfont.woff2') }}?v=4.7.0") format('woff2'), 
+               url("{{ url_for('static', filename='fonts/fontawesome-webfont.woff') }}?v=4.7.0") format('woff'), 
+               url("{{ url_for('static', filename='fonts/fontawesome-webfont.ttf') }}?v=4.7.0") format('truetype'), 
+               url("{{ url_for('static', filename='fonts/fontawesome-webfont.svg') }}?v=4.7.0#fontawesomeregular") format('svg');
+          font-weight: normal;
+          font-style: normal;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.css') }}" media="all">    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public.css') }}" media="all">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/tabGroup.css') }}" media="all">
+    <link id="layui_theme_css" rel="stylesheet" href="{{ url_for('static', filename='css/layui-theme-dark.css') }}">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-row layui-col-space16">
+            <div class="layui-col-md8">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-tab layui-card" lay-filter="demoTab">
+                            <ul class="layui-tab-title">
+                                <li class="layui-this" lay-id="11"><i class="fa fa-pencil-square"></i>正面提示词 
+                                    <!-- <button id="select_random" class="layui-btn layui-btn-sm" style="display: none;" onclick="fetchAndProcessData()">随机Tag</button> -->
+                                    <button id="upload-vibe" class="layui-btn layui-btn-sm" style="display: none;"><i class="layui-icon layui-icon-upload"></i> Vibe Transfer</button>
+                                </li>
+                                <li lay-id="22"><i class="fa fa-thumbs-o-down"></i>负面提示词</li>
+                                <li lay-id="33"><i class="fa fa-book"></i>内容翻译(ChatGPT) <button id="translateButton" class="layui-btn layui-btn-sm" style="display: none;" onclick="translateText()">翻译内容</button></li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="tagarea layui-tab-item layui-show">
+                                    <div class="layui-row layui-col-space10">
+                                        <div class="layui-col-md12" id="tagareaspace">
+                                            <div class="layui-form-item layui-form-text">
+                                                <textarea id="tagarea" placeholder="请输入内容" class="layui-textarea" style="height: 100px;">best quality, amazing quality, very aesthetic, absurdres, masterpiece,</textarea>
+                                                <ul id="custom-context-menu">
+                                                    <li onclick="annotateText()">注释</li>
+                                                    <li onclick="unannotateText()">取消注释</li>
+                                                    <li onclick="increaseWeight()">加权</li>
+                                                    <li onclick="decreaseWeight()">降权</li>
+                                                    <li id="copy_prompt">复制</li>
+                                                    <li id="cut_prompt">剪切</li>
+                                                    <li id="paste_prompt">粘贴</li>
+                                                    <li id="select-all">全选</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="tag-suggestions"></div>
+                                </div>
+                                <div class="tagarea layui-tab-item">
+                                    <div class="layui-row layui-col-space10 layuimini-qiuck">
+                                        <div class="layui-form-item layui-form-text">
+                                            <textarea id="tagarea2" placeholder="请输入内容" class="layui-textarea" style="height: 100px;">lowres, {bad}, error, fewer, extra, missing, worst quality, jpeg artifacts, bad quality, watermark, unfinished, displeasing, chromatic aberration, signature, extra digits, artistic error, username, scan, [abstract]</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tagarea layui-tab-item">
+                                    <div class="layui-row layui-col-space10 layuimini-qiuck">
+                                        <div class="layui-col-md6">
+                                            <div class="layui-card">
+                                                <div class="layui-card-body">
+                                                    <div class="translatearea">
+                                                        <div class="layui-row layui-col-space10">
+                                                            <div class="layui-form-item layui-form-text">
+                                                                <textarea id="translatearea1" placeholder="请输入需要翻译的内容" class="layui-textarea" style="height: 100px;"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md6">
+                                            <div class="layui-card">
+                                                <div class="layui-card-body">
+                                                    <div class="translatearea">
+                                                        <div class="layui-row layui-col-space10 layuimini-qiuck">
+                                                            <div class="layui-form-item layui-form-text">
+                                                                <textarea id="translatearea2" placeholder="结果输出" class="layui-textarea" style="height: 100px;"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <div class="control-container">
+                                    <button id="prompt_notebook" class="layui-btn layui-btn-primary layui-btn-fluid layui-btn-sm" lay-on="prompt_notebook">词条笔记本</button>
+                                    <button id="prompt_upload" class="layui-btn layui-btn-primary layui-btn-fluid layui-btn-sm" lay-on="prompt_upload">上传词条</button>
+                                    <button id="select_random" class="layui-btn layui-btn-primary layui-btn-fluid layui-btn-sm" lay-on="Stochastic_functional_area">随机Tag</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md12" id="Random_Tag" style="display: none;">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-md3">
+                                <div class="layui-card">
+                                    <div class="layui-card-header">
+                                        <i class="fa fa-random icon">随机Tag</i>
+                                    </div>
+                                    <div class="layui-card-body">
+                                        <div class="layui-btn-container">
+                                            <button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm layui-btn-fluid" id="addTabBtn">添加自定类别</button>
+                                            <button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm layui-btn-fluid" id="addTagGroupBtn">添加轮询词组</button>
+                                            <button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm layui-btn-fluid" id="addPlayerBtn">添加随机角色</button>
+                                            <button class="layui-btn layui-btn-primary layui-btn-sm layui-btn-fluid" id="RemoveDefaultTab">清空默认选项</button>
+                                            <button class="layui-btn layui-btn-primary layui-bg-red layui-btn-sm layui-btn-fluid" id="randomSelectBtn">获取随机类别</button>
+                                            <button class="layui-btn layui-btn-primary layui-bg-red layui-btn-sm layui-btn-fluid" id="getTerms">获取词条组</button>
+                                            <button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm layui-btn-fluid" id="exportTabBtn">导出类别配置</button>
+                                            <button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm layui-btn-fluid" id="exportTagGroupBtn">导出词组配置</button>
+                                            <button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm layui-btn-fluid" id="exportPlayerBtn">导出角色配置</button>
+                                            <input type="file" id="importFile" style="display: none;" />
+                                            <button id="importBtn" class="layui-btn layui-border-green layui-btn-primary layui-btn-sm layui-btn-fluid">导入类别配置</button>
+                                            <input type="file" id="importTagGroupFile" style="display: none;" />
+                                            <button id="importTagGroupBtn" class="layui-btn layui-border-green layui-btn-primary layui-btn-sm layui-btn-fluid">导入词组配置</button>
+                                            <input type="file" id="importPlayerFile" style="display: none;" />
+                                            <button id="importPlayerBtn" class="layui-btn layui-border-green layui-btn-primary layui-btn-sm layui-btn-fluid">导入角色配置</button>
+                                        </div>
+                                        <div class="control-container line-wrap">
+                                            <div class="layui-form">
+                                                <input type="checkbox" name="Artist_position" title="画师置于前端">
+                                                <input type="checkbox" name="Random_sort" title="随机排序">
+                                                <input type="checkbox" name="Auto_random" lay-filter="Auto_random" title="每次请求自动随机词条">
+                                                <input type="checkbox" name="Auto_polling" lay-filter="Auto_polling" title="每次请求自动轮询词条组">
+                                                <input type="checkbox" name="Random_checkbox" title="启用随机权重">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md9">
+                                <div class="layui-card">
+                                    <div class="layui-card-header">
+                                        <i class="fa fa-random icon">随机Tag</i>
+                                    </div>
+                                    <div class="layui-card-body">
+                                        <div class="layui-tab" lay-filter="test-handle" lay-allowclose="true">
+                                            <ul class="layui-tab-title">
+                                            <li class="layui-this" lay-id="11" lay-allowclose="false">画师标签</li>
+                                            </ul>
+                                            <div class="layui-tab-content">
+                                                <div class="layui-tab-item layui-show">
+                                                    <div class="control-container line-wrap">
+                                                        <label for="Rescale-input" class="control-label">设定:</label>
+                                                        <div class="layui-form"><input type="checkbox" name="Random_range" title="随机画师抽取个数"></div>
+                                                        <label for="Rescale-input" class="control-label">抽取个数范围:</label>
+                                                        <input type="number" id="illustratorCount" placeholder="画师词条最大数量,默认为5" class="layui-input" min="0" value="5">
+                                                        <input type="number" id="illustratorMinCount" placeholder="画师词条最小数量,默认为1" class="layui-input" min="0" value="1">
+                                                        <input type="number" id="entryCount" placeholder="自定义画师词条抽取数量" class="layui-input" min="0" value="0">
+                                                    </div>
+                                                    <div>
+                                                        <table id="illustratorTable" lay-filter="illustratorTable"></table>
+                                                    </div>
+                                                    <hr class="ws-space-16">
+                                                    <div class="control-container line-wrap">
+                                                        <label for="Rescale-input" class="control-label">自定义画师词条(逗号分隔):</label>
+                                                        <textarea id="entryInput" placeholder="Enter a custom combination of custom artist terms, using commas to separate each Tag" class="layui-textarea" style="min-height: 30px;"></textarea>
+                                                        <button class="layui-btn layui-btn-primary layui-btn-sm" id="generateTableBtn">生成词条表格</button>
+                                                        <div class="layui-form">
+                                                            <input type="checkbox" name="Split_artist" title="拆分自定义画师">
+                                                        </div>
+                                                    </div>
+                                                    <hr class="ws-space-16">
+                                                    <div>
+                                                        <table id="entryTable" lay-filter="entryTable"></table>
+                                                    </div>
+                                                    <div class="control-container line-wrap">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-card layui-col-md12">
+                            <div class="layui-card-header" id="expandableTrigger"><i class="fa fa-picture-o icon" style="cursor: pointer;">点击展开图像上传功能区</i></div>
+                            <div class="layui-card-body" style="display:none;" id="uploadArea">
+                                <div id="1echarts-records" style="width: 100%;">
+                                    <div class="image-upload-container" id="img-upload" style="backdrop-filter: blur(5px); padding: 20px; border-radius: 10px;">
+                                        <div class="layui-col-md12">
+                                            <div class="layui-col-md4">
+                                                <div class="layui-upload-drag" style="display: block;" id="ID-upload-demo-drag">
+                                                    <i class="layui-icon layui-icon-upload"></i> 
+                                                    <div>上传图像进行常规图像处理</div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-col-md4">
+                                                <div class="layui-upload-drag" style="display: block;" id="Pro-upload-picture-drag">
+                                                    <i class="layui-icon layui-icon-upload"></i> 
+                                                    <div>上传图像进行高级图像处理</div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-col-md4">
+                                                <div class="layui-upload-drag" style="display: block;" id="expand-picture-drag">
+                                                    <i class="layui-icon layui-icon-upload"></i> 
+                                                    <div>上传图像进行图像扩展处理</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md12" id="expand-picture-container">
+                                            <div class="img-canvas-container">
+                                                <canvas id="expand-imageCanvas" style="max-width: 100%;"></canvas>
+                                            </div>
+                                            <div class="layui-card-body" id="expand-picture" style="display: none;">
+                                                <button id="reset-button">重置画布</button>
+                                                <button id="upload-button">更新画布状态</button>
+                                                <label for="mask_diffusion">蒙版扩散像素：</label>
+                                                <input type="range" id="mask_diffusion" min="1" max="50" value="20">
+                                                <button id="export-button">导出蒙版</button>
+                                                <button id="remove-button">清除蒙版</button>
+                                                <button id="fill-expand-Btn">使用生成的图像填补</button>
+                                                <button id="download-button">保存图像</button>
+                                                <button id="delete-expand-picture-btn">退出当前功能</button>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md6">
+                                            <div class="layui-card-body" id="Pro-draw" style="display: none;">
+                                                <button id="exportBtn">导出图像</button>
+                                                <button id="fillBtn">使用生成的图像填补</button>
+                                                <button id="clear-all-Btn">退出当前功能</button>
+                                                <div class="image-container-draw">
+                                                    <img id="Pro-draw-image">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md6" id="mask-draw-container">
+                                            <div class="layui-card-body" id="mask-draw" style="display: none;">
+                                                <div class="layui-form">
+                                                    <label for="brushSize">笔刷尺寸：</label>
+                                                    <input type="range" id="brushSize" min="1" max="200" value="35" title="快捷键：-=">
+                                                    <span style="padding-left: 20px;">颜色:</span>
+                                                    <div id="ID-colorpicker-demo-size-sm" style="margin-left: 6px;"></div>
+                                                    <button id="colorPickerBtn" title="快捷键：I">取色工具</button>
+                                                    <input type="checkbox" name="disabled_original_image" lay-filter="disabled_original_image" title="禁用Overlay Original Image">
+                                                    <input type="checkbox" name="draw_color_image" lay-filter="draw_color_image" title="图像彩绘"><button id="exportColorBtn" title="将绘制的内容保存到图像">保存彩绘</button>
+                                                </div>
+                                                <label for="imageSize">图像分辨率：</label>
+                                                <span id="imageSize"></span>
+                                                <button id="exportMask" title="快捷键: S">导出蒙版</button>
+                                                <button id="remove_background" title="快捷键: Ctrl+B">生成背景蒙版</button>
+                                                <button id="undoBtn" title="快捷键: Ctrl+Z">撤销</button>
+                                                <button id="redoBtn" title="快捷键: Ctrl+Y">重做</button>
+                                                <button id="clearBtn" title="快捷键: C">清空</button>
+                                                <button id="eraserBtn" title="快捷键: E">橡皮擦</button>
+                                                <div class="layui-form">
+                                                    <input type="radio" name="augment-image" value="lineart" lay-filter="augment-image" title="转线稿(Line Art)">
+                                                    <input type="radio" name="augment-image" value="sketch" lay-filter="augment-image" title="转草稿(Sketch)">
+                                                    <input type="radio" name="augment-image" value="declutter" lay-filter="augment-image" title="清理画面(Declutter)">
+                                                    <input type="radio" name="augment-image" value="emotion" lay-filter="augment-image" title="情绪修改(Emotion)">
+                                                    <input type="radio" name="augment-image"  value="colorize" lay-filter="augment-image" title="着色(Colorize)">
+                                                </div>
+                                                <div class="layui-form" id="emotionContent" style="display: none;">
+                                                    <h3>Anime Only. Start with a neutral emotion image.</h3>
+                                                    <!-- <form class="layui-form" action=""> -->
+                                                        <div class="layui-form-item">
+                                                            <label class="layui-form-label">Emotion</label>
+                                                            <div class="layui-input-inline">
+                                                                <select name="emotion" lay-verify="required">
+                                                                    <option value="neutral">中立</option>
+                                                                    <option value="happy">开心</option>
+                                                                    <option value="sad">悲伤</option>
+                                                                    <option value="angry">愤怒</option>
+                                                                    <option value="surprised">惊讶</option>
+                                                                    <option value="disgusted">厌恶</option>
+                                                                    <option value="scared">害怕</option>
+                                                                    <option value="confused">困惑</option>
+                                                                    <option value="tired">疲倦</option>
+                                                                    <option value="excited">兴奋</option>
+                                                                    <option value="embarrassed">尴尬</option>
+                                                                    <option value="shy">害羞</option>
+                                                                    <option value="smug">得意</option>
+                                                                    <option value="determined">坚定</option>
+                                                                    <option value="bored">无聊</option>
+                                                                    <option value="thinking">思考</option>
+                                                                    <option value="nervous">紧张</option>
+                                                                    <option value="laughing">大笑</option>
+                                                                    <option value="lrritated">恼火</option>
+                                                                    <option value="aroused">激动</option>
+                                                                    <option value="worried">担忧</option>
+                                                                    <option value="love">恋爱</option>
+                                                                    <option value="hurt">痛苦</option>
+                                                                    <option value="playful">调皮</option>
+                                                                </select>                                                                
+                                                            </div>
+                                                            <div class="layui-input-inline">
+                                                                <button type="button" class="layui-btn layui-btn-normal" id="decrementBtn">-</button>
+                                                                <button type="button" class="layui-btn layui-btn-normal" id="incrementBtn">+</button>
+                                                                <span class="status-text" id="statusText">Normal</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="layui-form-item">
+                                                            <label class="layui-form-label">Prompt</label>
+                                                            <div class="layui-input-block">
+                                                                <input type="text" name="emotionPrompt" id="emotion_Prompt" placeholder="Prompt (Optional)" class="layui-input">
+                                                            </div>
+                                                        </div>
+                                                    <!-- </form> -->
+                                                </div>
+                                                <div class="layui-form" id="colorizeContent" style="display: none;">
+                                                    <div class="layui-form-item">
+                                                        <label class="layui-form-label">Defry</label>
+                                                        <div class="layui-input-inline">
+                                                            <input type="number" name="defry" id="defryInput" placeholder="0-5" class="layui-input" min="0" max="5" value="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="layui-form-item">
+                                                        <label class="layui-form-label">Prompt</label>
+                                                        <div class="layui-input-block">
+                                                            <input type="text" name="colorizePrompt" id="colorize_Prompt" placeholder="Prompt (Optional)" class="layui-input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="canvas-container" id="ID-upload-demo-preview">
+                                                <canvas id="imageCanvas" style="max-width: 100%;"></canvas>
+                                                <canvas id="colorCanvas"></canvas>
+                                                <canvas id="maskCanvas"></canvas>
 
-    // 更新样式表链接
-    themeLink.setAttribute('href', theme);
-
-    // 更稳妥地查找并更新图标
-    var iconElement = document.querySelector('.' + oldIconClass);
-    if (iconElement) {
-      iconElement.classList.remove(oldIconClass);
-      iconElement.classList.add(newIconClass);
-    }
-  }
-});
-});
-</script><script>
+                                                <!-- 添加删除按钮 -->
+                                                <span id="delete-image-btn" style="display: none;">X</span>
+                                            </div>
+        
+                                            <div style="backdrop-filter: blur(5px); padding: 20px; border-radius: 10px;">
+                                                <div id="mask-preview" style="border-left: 4px solid #e6e6e6; padding-left: 20px;">
+                                                <!-- <img src="{{ url_for('static', filename='images/logo.png') }}" style="width: 50px; height: 50px;"> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <i class="fa fa-picture-o icon">图像输出</i>
+                                <label for="scale-slider" class="control-label"></label>
+                                <label for="scale-slider" class="control-label" id="queue"></label>
+                                <button id="downloadAll" class="layui-btn layui-btn-sm">下载所有图像</button>
+                            </div>
+                            <div class="layui-card-body">
+                                <div id="1echarts-records" style="width: 100%;min-height:350px">
+                                    <!-- 图像显示和预览区-->
+                                    <div class="image-display-container" id="img-display" style="backdrop-filter: blur(5px); padding: 20px; border-radius: 10px;">
+                                      <!-- <img src="img_base64" alt="generate-images" style="max-width: 100%; height: auto;"> -->
+                                    </div>
+                                    <!-- 图像的预览窗口 -->
+                                    <div class="image-preview-container" style="backdrop-filter: blur(5px); padding: 20px; border-radius: 10px;">
+                                        <div class="control-container" id="img-preview" style="border-left: 4px solid #e6e6e6; padding-left: 20px;">
+                                        <!-- <img src="{{ url_for('static', filename='images/loginbg.png') }}" style="width: 50px; height: 50px;"> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-card">
+                    <div class="layui-card-header" id="userOpus">Opus:</div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-body layui-text">
+                        <div class="control-container">
+                            <label for="image-slider" class="control-label">连续绘制(次):</label>
+                            <div id="image-input"></div>
+                        </div>
+                        <hr class="ws-space-16">
+                        <div class="control-container">
+                            <label for="model-list" class="control-label">使用模型(Model):</label>
+                            <div class="layui-form">
+                                <div class="layui-col-md12">
+                                    <select id="model-list">
+										<option value="nai-diffusion-4-curated-preview" id="nai-diffusion-4-curated-preview">nai-diffusion-4-curated-preview</option>
+                                        <option value="nai-diffusion-3" id="nai-diffusion-3">nai-diffusion-3</option>
+                                        <option value="nai-diffusion-furry-3" id="nai-diffusion-furry-3">nai-diffusion-furry-3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form">
+                                <input type="checkbox" name="autoDownload" lay-filter="autoDownload" title="自动下载图像">
+                                <input type="checkbox" name="autoVoice" lay-filter="autoVoice" title="生成结束播报">
+                            </div>
+                        </div>
+                        <hr class="ws-space-16">
+                        <div class="generate-container" id="generate-images-bth">
+                            <button id="generate-images" class="layui-btn">Generate Images</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-body layui-text">
+                        <hr class="ws-space-16">
+                        <div class="layui-collapse" lay-accordion>
+                            <div class="layui-colla-item">
+                                <div class="layui-colla-title">基础参数设置折叠面板</div>
+                                <div class="layui-colla-content layui-show">
+                                    <!-- Scale滑条和值显示 -->
+                                    <div class="control-container">
+                                        <label for="Scale-input" class="control-label">Guidance Scale:</label>
+                                        <div id="Scale-input"></div>
+                                        <span id="Scale-value">5.00</span>
+                                    </div>
+                                    <hr class="ws-space-16">
+                                    <!-- 采样算法下拉菜单 -->
+                                    <div class="control-container" id="sampling-algorithm_and_seed">
+                                        <label for="sampling-algorithm" class="control-label">采样:</label>
+                                        <div class="layui-form">
+                                            <div class="layui-col-md12">
+                                                <select id="sampling-algorithm">
+                                                    <option value="k_euler" id="k_euler">Euler</option>
+                                                    <option value="k_euler_ancestral" id="k_euler_ancestral" selected>Euler Ancestral</option>
+                                                    <option value="k_dpmpp_2s_ancestral" id="k_dpmpp_2s_ancestral">DPM++ 2S Ancestral</option>
+                                                    <option value="k_dpmpp_2m_sde" id="k_dpmpp_2m_sde">DPM++ 2M SDE</option>
+                                                    <option value="k_dpmpp_2m" id="k_dpmpp_2m">DPM++ 2M</option>
+                                                    <option value="k_dpmpp_sde" id="k_dpmpp_sde">DPM++ SDE</option>
+                                                    <option value="ddim_v3" id="ddim_v3">DDIM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Seed文本框 -->
+                                        <label for="seed" class="control-label">Seed:</label>
+                                        <div class="layui-form">
+                                            <input id="seed" type="text" name="" placeholder="Enter Seed" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <hr class="ws-space-16">
+                                    <!-- Steps滑条和值显示 -->
+                                    <div class="control-container">
+                                        <label for="Steps-slider" class="control-label">Steps:</label>
+                                        <div id="Steps-input"></div>
+                                    </div>
+                                    <hr class="ws-space-16">
+                                    <!-- Width滑条和值显示 -->
+                                    <div class="control-container">
+                                        <label for="Width-slider" class="control-label">Width:</label>
+                                        <div id="Width-input"></div>
+                                    </div>
+                                    <hr class="ws-space-16">
+                                    <!-- Height滑条和值显示 -->
+                                    <div class="control-container">
+                                        <label for="Height-slider" class="control-label">Height:</label>
+                                        <div id="Height-input"></div>
+                                    </div>
+                                    <hr class="ws-space-16">
+                                    <!-- 特殊尺寸下拉框 -->
+                                    <div class="control-container" id="resolution_and_AAA">
+                                        <label for="resolution" class="control-label">便捷分辨率:</label>
+                                        <div class="layui-form">
+                                            <div class="layui-col-md12">
+                                                <select id="resolution">
+                                                    <option value="1472X1472" id="1472X1472" selected>1472*1472</option>
+                                                    <option value="1024X1536" id="1024X1536">1024*1536</option>
+                                                    <option value="1536X1024" id="1536X1024">1536*1024</option>
+                                                    <option value="1088X1920" id="1088X1920">1088*1920</option>
+                                                    <option value="1920X1088" id="1920X1088">1920*1088</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form">
+                                            <input type="checkbox" name="AAA" title="启用分辨率" lay-skin="tag">
+                                        </div>
+                                    </div>
+                                    <hr class="ws-space-16">
+                                    <!-- Prompt Guidance Rescale滑条和值显示 -->
+                                    <div class="control-container">
+                                        <label for="Rescale-input" class="control-label">Prompt Guidance Rescale:</label>
+                                        <div id="Rescale-input"></div>
+                                        <span id="Rescale-value">0.00</span>
+                                    </div>
+                                    <hr class="ws-space-16">
+                                    <!-- Strength滑条和值显示 -->
+                                    <div class="control-container slider-container">
+                                        <label for="Strength-input" class="control-label">Strength:</label>
+                                        <div id="Strength-input"></div>
+                                        <span id="Strength-value">0.70</span>
+                                    </div>
+                                    <!-- Noise滑条和值显示 -->
+                                    <div class="control-container slider-container">
+                                        <label for="Noise-input" class="control-label">Noise:</label>
+                                        <div id="Noise-input"></div>
+                                        <span id="Noise-value">0.00</span>
+                                    </div>
+                                    <hr class="ws-space-16">
+                                    <!-- Noise Schedule滑条和值显示 -->
+                                    <div class="control-container">
+                                        <label for="noise-schedule" class="control-label">Noise Schedule:</label>
+                                        <div class="layui-form">
+                                            <div class="layui-col-md12">
+                                                <select id="noise-schedule">
+                                                    <option value="native" id="native">native</option>
+                                                    <option value="karras" id="karras">karras</option>
+                                                    <option value="exponential" id="exponential">exponential</option>
+                                                    <option value="polyexponential" id="polyexponential">polyexponential</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="ws-space-16">
+                                    <div class="generate-container">
+                                        <div class="layui-form">
+                                            <!-- SMEA 复选框 -->
+                                            <input type="checkbox" name="SMEA" title="SMEA" lay-filter="smea-checkbox">
+                                            <!-- DYN 复选框的容器 -->
+                                            <div id="dyn-container" style="display: none;">
+                                                <input type="checkbox" name="DYN" title="DYN">
+                                            </div>
+                                            <input type="checkbox" name="Variety" title="Variety" lay-filter="Variety-checkbox">
+                                            <input type="checkbox" name="Decrisp" title="Decrisp" lay-filter="Decrisp-checkbox">
+                                        </div>
+                                        <div class="layui-form Vibe-Transfer-container">
+                                            <input type="checkbox" name="Vibe_Transfer" title="Vibe_Transfer" lay-filter="Vibe_Transfer-checkbox">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-colla-item">
+                                <div class="layui-colla-title">VibeTransfer折叠面板</div>
+                                <div class="layui-colla-content">
+                                    <div class="Vibe-img-container"></div>
+                                </div>
+                            </div>
+                            <div class="layui-colla-item">
+                                <div class="layui-colla-title">单角色位置控制折叠面板</div>
+                                <div class="layui-colla-content">
+                                    <button id="addTabGroup" class="layui-btn layui-btn-fluid">Add Tab Group</button>
+                                    <div class="layui-form">
+                                        <input type="checkbox" name="AI_choice_Positions" title="AI choice Character Positions" lay-filter="Positions-checkbox">
+                                        <button id="loadTabGroups" class="layui-btn layui-btn-warm layui-btn-xs">缓存重载选项卡</button>
+                                    </div>
+                                    <div id="tabContainer"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/layui-v2.9.6/layui/layui.js') }}" charset="utf-8"></script>
+<script src="{{ url_for('static', filename='js/cropper.js') }}" charset="utf-8"></script>
+<script src="/get_script"></script>
+<script type="text/javascript">
+    window.rootPath = "{{ url_for('static', filename='') }}";
+</script>
+<script src="{{ url_for('static', filename='js/lay-config.js') }}?v=1.0.4" charset="utf-8"></script>
+<script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/draw.js') }}"></script>
+<script defer src="{{ url_for('static', filename='js/tabGroup.js') }}"></script>
+<script>
+    layui.use('layer', function() {
+        var layer = layui.layer;
+        var util = layui.util;
+    });
+</script>
+<script src="{{ url_for('static', filename='js/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/FileSaver.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/gen-img-uiti.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Random_tag.js') }}"></script>
+<script>
+    layui.use(['util', 'layer'], function(){
+    var util = layui.util, layer = layui.layer;
+    util.fixbar({
+      bars: [{
+        type: '切换背景色',
+        icon: 'layui-icon-moon' // 初始图标为月亮，代表深色主题
+      }],
+      click: function(type){
+        var themeLink = document.getElementById('layui_theme_css');
+        var currentTheme = themeLink.getAttribute('href');
+        var theme, oldIconClass, newIconClass;
+        
+        if(currentTheme.includes('dark')) {
+          // 如果当前是深色主题，切换到浅色主题
+          theme = '{{ url_for("static", filename="css/text.css") }}';
+          oldIconClass = 'layui-icon-moon'; // 旧图标为月亮，代表深色主题
+          newIconClass = 'layui-icon-light'; // 更新图标为太阳，代表浅色主题
+        } else {
+          // 如果当前是浅色主题，切换到深色主题
+          theme = '{{ url_for("static", filename="css/layui-theme-dark.css") }}'; // 深色主题的路径
+          oldIconClass = 'layui-icon-light'; // 旧图标为太阳，代表浅色主题
+          newIconClass = 'layui-icon-moon'; // 更新图标为月亮，代表深色主题
+        }
+  
+        // 更新样式表链接
+        themeLink.setAttribute('href', theme);
+  
+        // 更稳妥地查找并更新图标
+        var iconElement = document.querySelector('.' + oldIconClass);
+        if (iconElement) {
+          iconElement.classList.remove(oldIconClass);
+          iconElement.classList.add(newIconClass);
+        }
+      }
+    });
+  });
+</script>
+<script>
 window.addEventListener('beforeunload', function (e) {
-// 设置确认消息
-var confirmationMessage = '您有未保存的更改。您确定要离开此页面吗？';
+    // 设置确认消息
+    var confirmationMessage = '您有未保存的更改。您确定要离开此页面吗？';
 
-// 兼容不同的浏览器，设置默认的事件返回值
-e.returnValue = confirmationMessage; 
+    // 兼容不同的浏览器，设置默认的事件返回值
+    e.returnValue = confirmationMessage; 
 
-// 有些浏览器需要这个返回值
-return confirmationMessage; 
+    // 有些浏览器需要这个返回值
+    return confirmationMessage; 
 });
-</script><script type="text/html" id="deleteBtnTpl"><button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</button></script></body></html>
+</script>
+<script type="text/html" id="deleteBtnTpl">
+    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</button>
+</script>
+</body>
+</html>
